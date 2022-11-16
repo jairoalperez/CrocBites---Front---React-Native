@@ -30,7 +30,7 @@ const Login = () => {
   //HTTP Login
   const loginapp = () => {
     const fetchlogin = async () => {
-      const res = await axios.post('https://backend-mangaread.herokuapp.com/login', {
+      const res = await axios.post('https://backend-twittersito-siu.herokuapp.com/login', {
         username: log.username,
         password: log.pass
       },
@@ -43,8 +43,8 @@ const Login = () => {
         const cargar = async () => {
           await Alert.alert('Login Satisfactorio')
           await console.log('Login Satisfactorio')
-          await fetchgetuser()
-          await navigation.navigate('Profile')
+          //await fetchgetuser()
+          //await navigation.navigate('Profile')
         }
         cargar()
         
@@ -92,7 +92,8 @@ const Login = () => {
 
       <TouchableOpacity
         onPress={() => {
-          //loginapp()
+          loginapp()
+          //console.log(log.username + ' ' + log.pass)
         }}
         style={styles.button}>
         <Text style={styles.textbutton}>
