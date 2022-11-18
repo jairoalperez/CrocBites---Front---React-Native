@@ -64,7 +64,6 @@ const Login = () => {
           const result = datos.find(item => item.username === log.username)
           storeData('username', result.username)
           storeData('userId', result.id_usuario.toString())
-          storeData('email', result.correo)
           storeData('name', result.nombre)
     }
 
