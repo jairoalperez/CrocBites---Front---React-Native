@@ -43,8 +43,8 @@ const Login = () => {
         const cargar = async () => {
           await Alert.alert('Login Satisfactorio')
           await console.log('Login Satisfactorio')
-          //await fetchgetuser()
-          //await navigation.navigate('Profile')
+          await fetchgetuser()
+          await navigation.navigate('Profile')
         }
         cargar()
         
@@ -59,7 +59,7 @@ const Login = () => {
 
   //HTTP Get User By Username
     const fetchgetuser = async () => {
-      const res = await axios.get('https://backend-mangaread.herokuapp.com/buscar-nombre/' + log.username)
+      const res = await axios.get('https://backend-twittersito-siu.herokuapp.com/buscar-username/' + log.username)
           const datos = res.data
           const result = datos.find(item => item.username === log.username)
           storeData('username', result.username)
