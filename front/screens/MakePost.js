@@ -121,10 +121,11 @@ const MakePost = () => {
           <TextInput
             style={styles.tinputu}
             keyboardType='default'
-            placeholder='Escribe tu Bite aqui'
+            placeholder='Escribe tu Bite aqui (Max 250 Caracateres)'
             placeholderTextColor='gray'
             multiline
             textAlignVertical='top'
+            maxLength={250}
             onChangeText={(value) => handleChangeText('contenido', value)} />
 
           <TouchableOpacity onPress={openLibrary} style={styles.uploadBtn}>
