@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import NavBar from '../components/NavBar';
 import axios from 'axios';
@@ -26,9 +26,31 @@ const Dashboard = () => {
 
   }, [])
 
+  const [refresh, setRefresh] = useState(false)
+
+  const pullMe = () => {
+    setRefresh(true)
+    setTimeout(() => {
+      setRefresh(false)
+      console.log('pagina refrescada')
+        async function searchBites() {
+          await axios.get('https://backend-twittersito-siu.herokuapp.com/leer-post')
+            .then(res => {
+              setElements(res.data)
+            })
+        }
+        searchBites()
+    }, 3000)
+  }
+
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.containerscroll}>
+      <ScrollView contentContainerStyle={styles.containerscroll}
+        refreshControl={<RefreshControl
+          refreshing={refresh}
+          onRefresh={() => pullMe()}
+        />}
+      >
         <View style={styles.containerP}>
           <Text style={styles.textS}>Home</Text>
           {elements.map(elemento => {
@@ -36,16 +58,24 @@ const Dashboard = () => {
               <View style={styles.containerb}>
 
                 <View style={styles.containeruser}>
-                  <Text style={styles.nombre}>Cristiano Ronaldo</Text>
-                  <Text style={styles.username}>@cristiano</Text>
-                  <Text style={styles.fecha}>07/07/2022</Text>
+                  <Text style={styles.nombre}>{elemento.nombre} {elemento.apellido}</Text>
+                  <Text style={styles.username}>@{elemento.username}</Text>
+                  <Text style={styles.fecha}>{elemento.fecha}</Text>
                 </View>
 
-                <Text style={styles.content}>It's always impossible to hide the comfort that the @cr7cristianoronaldo Underwear collection provides and the fun that we have every time we shoot a campaign.</Text>
+                <Text style={styles.content}>{elemento.contenido}</Text>
+
+                {elemento.foto_url ? (
+                  <Image
+                    style={{ width: 350, height: 350, marginTop: 10, marginBottom: 10 }}
+                    source={{ uri: elemento.foto_url }}
+                  />
+                ) : null}
+
 
                 <View style={styles.containerpd}>
-                  <Text style={styles.postdata}>Likes: 15260</Text>
-                  <Text style={styles.postdata}>Retweets: 1368</Text>
+                  <Text style={styles.postdata}>Likes: x</Text>
+                  <Text style={styles.postdata}>Retweets: x</Text>
                 </View>
 
               </View>
@@ -70,26 +100,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "gold",
+    backgroundColor: "whitesmoke",
 
   },
   containerscroll: {
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 80,
+    marginTop: 50,
     width: 420
 
   },
   containerP: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "gold",
+    backgroundColor: "whitesmoke",
     marginTop: 10,
     marginBottom: 10,
   },
   textS: {
     fontSize: 50,
-    marginBottom: 30,
+    marginBottom: 20,
     fontWeight: 'bold',
   },
   button: {
@@ -112,10 +142,10 @@ const styles = StyleSheet.create({
   containerb: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: "darkslategrey",
+    backgroundColor: "olivedrab",
     textAlign: 'left',
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 10,
     marginTop: 20,
     width: 400
 
@@ -126,7 +156,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'left',
     width: 350
-    
+
   },
   containerpd: {
     flexDirection: 'row',
@@ -134,7 +164,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     width: 350
-    
+
   },
   nombre: {
     fontSize: 18,
@@ -162,7 +192,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "white",
     padding: 10,
-    backgroundColor: 'darkslategrey'
+    backgroundColor: 'olivedrab'
   },
   postdata: {
     fontSize: 18,
