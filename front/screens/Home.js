@@ -40,18 +40,6 @@ const Home = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        onPress={() => {
-          //storeData('userId', 'nouser')
-          navigation.navigate('Profile')
-          //getData('userId')
-        }}
-        style={styles.buttonguest}>
-        <Text style={styles.textbuttonr}>
-          Entrar sin Cuenta
-        </Text>
-      </TouchableOpacity>
-
     </View>
   )
 };

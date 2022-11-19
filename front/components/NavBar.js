@@ -27,6 +27,15 @@ const NavBar = () => {
 
       <TouchableOpacity 
       onPress={() => {
+        navigation.navigate('MakePost'), 
+        console.log('Presionaste el boton de MakePost')
+      }}
+      style={styles.button}>
+        <Icon name="plus" size={30} color="white" />
+      </TouchableOpacity>
+
+      <TouchableOpacity 
+      onPress={() => {
         navigation.navigate('Profile'), 
         console.log('Presionaste el boton de Perfil')
       }}

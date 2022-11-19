@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import NavBar from '../components/NavBar'
 import { storeData, getData } from '../helpers/asyncStorage'
@@ -51,6 +51,15 @@ useEffect(() => {
   return (
     <View style={styles.container}> 
       <Text>Profile</Text>
+      <TouchableOpacity
+        onPress={() => {
+          console.log(elements)
+        }}
+        style={styles.buttonregister}>
+        <Text style={styles.textbuttonr}>
+          act
+        </Text>
+      </TouchableOpacity>
       <NavBar />
     </View>
   )

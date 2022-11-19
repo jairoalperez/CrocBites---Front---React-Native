@@ -66,6 +66,7 @@ const Login = () => {
           storeData('userId', result.id_usuario.toString())
           storeData('name', result.nombre)
     }
+    
 
   return (
     <View style={styles.container}>
@@ -109,18 +110,6 @@ const Login = () => {
           Registrarse
         </Text>
       </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('Profile')
-          //storeData('userId', 'nouser')
-        }}
-        style={styles.buttonguest}>
-        <Text style={styles.textbuttonl}>
-          Entrar sin Cuenta
-        </Text>
-      </TouchableOpacity>
-
     </View>
   )
 };
