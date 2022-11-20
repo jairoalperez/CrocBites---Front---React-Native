@@ -122,28 +122,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontWeight: 'bold',
   },
-  button: {
-    backgroundColor: "darkgoldenrod",
-    padding: 10,
-    marginBottom: 15,
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    height: 75,
-    width: 250,
-
-  },
-  textbutton: {
-    fontSize: 20,
-    color: "white",
-
-  },
 
   containerb: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: "olivedrab",
     textAlign: 'left',
+    borderRadius: 10,
     padding: 10,
     marginBottom: 10,
     marginTop: 20,

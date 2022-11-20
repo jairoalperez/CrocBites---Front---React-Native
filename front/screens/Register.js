@@ -64,7 +64,7 @@ const Register = () => {
         keyboardType='default'
         placeholder='Nombre'
         placeholderTextColor='gray'
-        maxLength={8}
+        maxLength={10}
         onChangeText={(value) => handleChangeText('name', value)} />
 
       <TextInput
@@ -72,7 +72,7 @@ const Register = () => {
         keyboardType='default'
         placeholder='Apellido'
         placeholderTextColor='gray'
-        maxLength={8}
+        maxLength={10}
         onChangeText={(value) => handleChangeText('last', value)} />
 
       <TextInput
