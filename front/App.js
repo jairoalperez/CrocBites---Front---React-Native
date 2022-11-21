@@ -10,6 +10,7 @@ import Dashboard from './screens/Dashboard';
 import Profile from './screens/Profile';
 import Search from './screens/Search';
 import MakePost from './screens/MakePost';
+import UserS from './screens/UserS';
 
 const Stack = createNativeStackNavigator()
 
@@ -25,6 +26,7 @@ export default function App() {
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="MakePost" component={MakePost} />
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="UserS" component={UserS} />
       </Stack.Navigator>
     </NavigationContainer>
   );
