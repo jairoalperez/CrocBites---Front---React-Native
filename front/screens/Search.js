@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView, Alert } from 'react-native'
 import NavBar from '../components/NavBar'
 import { useEffect, useState } from 'react'
 import Picker from '@ouroboros/react-native-picker';
@@ -22,7 +22,18 @@ const Search = () => {
     bite: []
   })
 
+  const [userId, setUserId] = useState('')
+
   let [picker, setPicker] = useState('user');
+
+  useEffect(() => {
+    console.log('cargo search')
+
+    getData('userId').then(result => {
+      setUserId(result)
+    })
+
+  }, [])
 
   const handleChangeText = (word, value) => {
     setSearch({ ...search, [word]: value })
@@ -83,9 +94,9 @@ const Search = () => {
 
         <View style={styles.results}>
 
-          {elements.element.map(elemento => {
+          {elements.element.map((elemento, i) => {
             return (
-              <View>
+              <View key={i}>
                 <TouchableOpacity
                   onPress={() => {
                     storeData('usersearch', elemento.id_usuario.toString())
@@ -102,31 +113,72 @@ const Search = () => {
             )
           })}
 
-          {bites.bite.map(post => {
+          {bites.bite.map((post, o) => {
             return (
-              <View style={styles.containerb}>
+              <View style={styles.containerb} key={o}>
+                <TouchableOpacity onPress={() => {
+                  storeData('postselected', post.id_post.toString())
+                  navigation.navigate('Post')
+                }}>
 
-                <View style={styles.containeruser}>
-                  <Text style={styles.nombre}>{post.nombre} {post.apellido}</Text>
-                  <Text style={styles.username}>@{post.username}</Text>
-                  <Text style={styles.fecha}>{post.fecha}</Text>
-                </View>
+                  <View style={styles.containeruser}>
+                    <Text style={styles.nombre}>{post.nombre} {post.apellido}</Text>
+                    <Text style={styles.username}>@{post.username}</Text>
+                    <Text style={styles.fecha}>{post.fecha}</Text>
+                  </View>
 
-                <Text style={styles.content}>{post.contenido}</Text>
+                  <Text style={styles.content}>{post.contenido}</Text>
 
-                {post.foto_url ? (
-                  <Image
-                    style={{ width: 350, height: 350, marginTop: 10, marginBottom: 10 }}
-                    source={{ uri: post.foto_url }}
-                  />
-                ) : null}
+                  {post.foto_url ? (
+                    <Image
+                      style={{ width: 350, height: 350, marginTop: 10, marginBottom: 10 }}
+                      source={{ uri: post.foto_url }}
+                    />
+                  ) : null}
+
+                  <View style={styles.containerpd}>
+                    <TouchableOpacity
+                      onPress={() => {
+
+                        const darLike = async () => {
+
+                          const res = await axios.post('https://backend-twittersito-siu.herokuapp.com/like', {
+                            id_user: userId,
+                            id_post: post.id_post
+                          },
+                            console.log('Conexion Satisfactoria'),
+                          )
+                          console.log(res.data)
+
+                          if (res.data === 1) {
+                            Alert.alert(post.username + ' te da las gracias por darle like a su bite!')
+                          } else {
+                            const deleteLike = async () => {
+                              const res = await axios.delete('https://backend-twittersito-siu.herokuapp.com/dlike/' + userId + '/' + post.id_post)
+                              Alert.alert('Se elimino tu like')
+                            }
+                            deleteLike()
+
+                          }
+                        }
+                        darLike()
 
 
-                <View style={styles.containerpd}>
-                  <Text style={styles.postdata}>Likes: x</Text>
-                  <Text style={styles.postdata}>Retweets: x</Text>
-                </View>
 
+                      }}
+                      style={styles.botonesbar}>
+                      <Icon name="heart" size={30} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        console.log('rebite: ' + post.id_post)
+                      }}
+                      style={styles.botonesbar}>
+                      <Icon name="retweet" size={30} color="white" />
+                    </TouchableOpacity>
+                  </View>
+
+                </TouchableOpacity>
               </View>
 
             )
@@ -251,7 +303,8 @@ const styles = StyleSheet.create({
     color: "black",
     padding: 10,
     backgroundColor: 'whitesmoke',
-    width: 350
+    width: 350,
+    marginBottom: 10
   },
   fecha: {
     fontSize: 12,
@@ -265,6 +318,11 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     fontWeight: 'bold',
     padding: 10,
+
+  },
+  botonesbar: {
+    marginLeft: 20,
+    marginRight: 20,
 
   },
 

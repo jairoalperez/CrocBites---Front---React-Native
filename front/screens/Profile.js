@@ -8,6 +8,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Profile = () => {
 
+  const navigation = useNavigation();
+
   const [userId, setUserId] = useState('')
   const [username, setUsername] = useState('')
 
@@ -49,11 +51,6 @@ const Profile = () => {
       searchUser()
       console.log('busqueda ready')
     }
-
-    console.log(userId)
-    console.log(username)
-    console.log(elements)
-    console.log(userData)
 
   }, [userId, username])
 
@@ -119,12 +116,16 @@ const Profile = () => {
           Bites
         </Text>
 
-        {elements.map(elemento => {
+        {elements.map((elemento, a, b) => {
           return (
-            <View style={styles.containerborrar}>
+            <View style={styles.containerborrar} key={a}>
 
 
-              <View style={styles.containerb}>
+              <View style={styles.containerb} key={a}>
+              <TouchableOpacity onPress={() => {
+                    storeData('postselected', elemento.id_post.toString())
+                    navigation.navigate('Post')
+                  }}>
 
                 <View style={styles.containeruser}>
                   <Text style={styles.fecha}>{elemento.fecha}</Text>
@@ -139,14 +140,7 @@ const Profile = () => {
                   />
                 ) : null}
 
-
-                <View style={styles.containerpd}>
-                  <Text style={styles.postdata}>Likes: x</Text>
-                  <Text style={styles.postdata}>Retweets: x</Text>
-                </View>
-
-
-
+                </TouchableOpacity>
               </View>
               <TouchableOpacity
                 onPress={() => {
@@ -344,7 +338,8 @@ const styles = StyleSheet.create({
     color: "black",
     padding: 10,
     backgroundColor: 'whitesmoke',
-    width: 280
+    width: 280,
+    marginBottom: 10
   },
   fecha: {
     fontSize: 15,

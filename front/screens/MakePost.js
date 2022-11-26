@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
   containerimg: {
     justifyContent: "center",
     alignItems: "center",
+
   },
   uploadBtn: {
     backgroundColor: "yellowgreen",
@@ -174,10 +175,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 50,
     width: 300,
+
   },
   textbutton: {
     fontSize: 20,
     color: "white",
+
   },
   skip: {
     fontSize: 25,
@@ -186,6 +189,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     backgroundColor: 'white',
     padding: 10,
+
   },
   image: {
     height: 100,
@@ -209,6 +213,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: 'white',
     fontWeight: 'bold',
+
   },
 
 });

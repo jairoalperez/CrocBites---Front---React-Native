@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, RefreshControl } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, RefreshControl, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import NavBar from '../components/NavBar';
 import axios from 'axios';
 import { storeData, getData } from '../helpers/asyncStorage'
 import { useNavigation } from "@react-navigation/native";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const Dashboard = () => {
@@ -11,9 +12,14 @@ const Dashboard = () => {
   const navigation = useNavigation();
 
   const [elements, setElements] = useState([])
+  const [userId, setUserId] = useState('')
 
   useEffect(() => {
     console.log('cargo dashboard')
+
+    getData('userId').then(result => {
+      setUserId(result)
+    })
 
     async function searchBites() {
       await axios.get('https://backend-twittersito-siu.herokuapp.com/leer-post')
@@ -33,15 +39,18 @@ const Dashboard = () => {
     setTimeout(() => {
       setRefresh(false)
       console.log('pagina refrescada')
-        async function searchBites() {
-          await axios.get('https://backend-twittersito-siu.herokuapp.com/leer-post')
-            .then(res => {
-              setElements(res.data)
-            })
-        }
-        searchBites()
+      async function searchBites() {
+        await axios.get('https://backend-twittersito-siu.herokuapp.com/leer-post')
+          .then(res => {
+            setElements(res.data)
+          })
+      }
+      searchBites()
     }, 3000)
   }
+
+  
+
 
   return (
     <View style={styles.container}>
@@ -53,9 +62,14 @@ const Dashboard = () => {
       >
         <View style={styles.containerP}>
           <Text style={styles.textS}>Home</Text>
-          {elements.map(elemento => {
+          {elements.map((elemento, i) => {
             return (
-              <View style={styles.containerb}>
+              <View style={styles.containerb} key={i}>
+                <TouchableOpacity onPress={() => {
+                    storeData('postselected', elemento.id_post.toString())
+                    navigation.navigate('Post')
+                  }}>
+
 
                 <View style={styles.containeruser}>
                   <Text style={styles.nombre}>{elemento.nombre} {elemento.apellido}</Text>
@@ -63,7 +77,7 @@ const Dashboard = () => {
                   <Text style={styles.fecha}>{elemento.fecha}</Text>
                 </View>
 
-                <Text style={styles.content}>{elemento.contenido}</Text>
+                <Text style={styles.content} >{elemento.contenido}</Text>
 
                 {elemento.foto_url ? (
                   <Image
@@ -72,12 +86,48 @@ const Dashboard = () => {
                   />
                 ) : null}
 
-
                 <View style={styles.containerpd}>
-                  <Text style={styles.postdata}>Likes: x</Text>
-                  <Text style={styles.postdata}>Retweets: x</Text>
-                </View>
+                <TouchableOpacity
+                onPress={() => {
 
+                  const darLike = async () => {
+
+                    const res = await axios.post('https://backend-twittersito-siu.herokuapp.com/like', {
+                      id_user: userId,
+                      id_post: elemento.id_post
+                    },
+                      console.log('Conexion Satisfactoria'),
+                    )
+                    console.log(res.data)
+                    if (res.data === 1){
+                      Alert.alert(elemento.username+' te da las gracias por darle like a su bite!')
+                    } else {
+                        const deleteLike = async () => {
+                        const res = await axios.delete('https://backend-twittersito-siu.herokuapp.com/dlike/' + userId + '/' + elemento.id_post)
+                        Alert.alert('Se elimino tu like')
+                      }
+                      deleteLike()
+
+                    }
+                    }
+                    darLike()
+
+
+
+                }}
+                style={styles.botonesbar}>
+                <Icon name="heart" size={30} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log('retweet: ' + elemento.id_post)
+                }}
+                style={styles.botonesbar}>
+                <Icon name="retweet" size={30} color="white" />
+              </TouchableOpacity>
+                </View>
+                
+                </TouchableOpacity>
               </View>
 
             )
@@ -171,7 +221,8 @@ const styles = StyleSheet.create({
     color: "black",
     padding: 10,
     backgroundColor: 'whitesmoke',
-    width: 350
+    width: 350,
+    marginBottom: 10
   },
   fecha: {
     fontSize: 12,
@@ -185,6 +236,11 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     fontWeight: 'bold',
     padding: 10,
+
+  },
+  botonesbar: {
+    marginLeft: 20,
+    marginRight: 20,
 
   },
 

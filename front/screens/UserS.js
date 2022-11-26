@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, Image, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import NavBar from '../components/NavBar'
 import { storeData, getData } from '../helpers/asyncStorage'
@@ -8,16 +8,23 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const UserS = () => {
 
+  const navigation = useNavigation();
+
   const [userSearch, setUserSearch] = useState('')
 
   const [userData, setUserData] = useState([])
   const [elements, setElements] = useState([])
+  const [userId, setUserId] = useState('')
 
   useEffect(() => {
     console.log('cargo profile')
 
     getData('usersearch').then(result => {
-        setUserSearch(result)
+      setUserSearch(result)
+    })
+
+    getData('userId').then(result => {
+      setUserId(result)
     })
   }, [])
 
@@ -48,7 +55,7 @@ const UserS = () => {
 
     console.log(userSearch)
 
-  }, [userSearch])
+  }, [userSearch, userId])
 
   const [refresh, setRefresh] = useState(false)
   const pullMe = () => {
@@ -106,6 +113,11 @@ const UserS = () => {
 
               <View style={styles.containerb}>
 
+              <TouchableOpacity onPress={() => {
+                    storeData('postselected', elemento.id_post.toString())
+                    navigation.navigate('Post')
+                  }}>
+
                 <View style={styles.containeruser}>
                   <Text style={styles.fecha}>{elemento.fecha}</Text>
                 </View>
@@ -114,18 +126,54 @@ const UserS = () => {
 
                 {elemento.foto_url ? (
                   <Image
-                    style={{ width: 280, height: 275, marginTop: 10, marginBottom: 10 }}
+                    style={{ width: 350, height: 350, marginTop: 10, marginBottom: 10 }}
                     source={{ uri: elemento.foto_url }}
                   />
                 ) : null}
 
 
                 <View style={styles.containerpd}>
-                  <Text style={styles.postdata}>Likes: x</Text>
-                  <Text style={styles.postdata}>Retweets: x</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+
+                      const darLike = async () => {
+
+                        const res = await axios.post('https://backend-twittersito-siu.herokuapp.com/like', {
+                          id_user: userId,
+                          id_post: elemento.id_post
+                        },
+                          console.log('Conexion Satisfactoria'),
+                        )
+                        console.log(res.data)
+                        if (res.data === 1) {
+                          Alert.alert(elemento.username + ' te da las gracias por darle like a su bite!')
+                        } else {
+                          const deleteLike = async () => {
+                            const res = await axios.delete('https://backend-twittersito-siu.herokuapp.com/dlike/' + userId + '/' + elemento.id_post)
+                            Alert.alert('Se elimino tu like')
+                          }
+                          deleteLike()
+
+                        }
+                      }
+                      darLike()
+
+
+
+                    }}
+                    style={styles.botonesbar}>
+                    <Icon name="heart" size={30} color="white" />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      console.log('retweet: ' + elemento.id_post)
+                    }}
+                    style={styles.botonesbar}>
+                    <Icon name="retweet" size={30} color="white" />
+                  </TouchableOpacity>
                 </View>
 
-
+                </TouchableOpacity>
 
               </View>
             </View>
@@ -261,14 +309,14 @@ const styles = StyleSheet.create({
 
   containerb: {
     justifyContent: 'center',
-    alignItems: 'left',
+    alignItems: 'center',
     backgroundColor: "olivedrab",
     textAlign: 'left',
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
     marginTop: 20,
-    width: 300
+    width: 375
 
   },
   containerborrar: {
@@ -280,13 +328,16 @@ const styles = StyleSheet.create({
     justifyContent: 'left',
     alignItems: 'left',
     textAlign: 'left',
+    width: 350
 
   },
   containerpd: {
-    justifyContent: 'left',
+
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'left',
     textAlign: 'left',
-    width: 280
+    width: 350
 
   },
   nombret: {
@@ -309,7 +360,8 @@ const styles = StyleSheet.create({
     color: "black",
     padding: 10,
     backgroundColor: 'whitesmoke',
-    width: 280
+    width: 350,
+    marginBottom: 10
   },
   fecha: {
     fontSize: 15,
@@ -324,6 +376,13 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     fontWeight: 'bold',
     marginTop: 5,
+    marginLeft: 30,
+    marginRight: 30
+
+  },
+  botonesbar: {
+    marginLeft: 20,
+    marginRight: 20,
 
   },
 });

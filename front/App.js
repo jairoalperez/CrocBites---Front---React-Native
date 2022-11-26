@@ -11,6 +11,9 @@ import Profile from './screens/Profile';
 import Search from './screens/Search';
 import MakePost from './screens/MakePost';
 import UserS from './screens/UserS';
+import Followers from './screens/Followers';
+import Following from './screens/Following';
+import Post from './screens/Post';
 
 const Stack = createNativeStackNavigator()
 
@@ -18,7 +21,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="Login" component={Login} />
@@ -27,6 +29,9 @@ export default function App() {
         <Stack.Screen name="MakePost" component={MakePost} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="UserS" component={UserS} />
+        <Stack.Screen name="Followers" component={Followers} />
+        <Stack.Screen name="Following" component={Following} />
+        <Stack.Screen name="Post" component={Post} />
       </Stack.Navigator>
     </NavigationContainer>
   );

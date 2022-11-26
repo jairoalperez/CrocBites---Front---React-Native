@@ -50,7 +50,7 @@ const NavBar = () => {
         Alert.alert('Sesion Cerrada')
       }}
       style={styles.button}>
-        <Icon name="close" size={30} color="white" />
+        <Icon name="arrow-circle-o-right" size={30} color="white" />
       </TouchableOpacity>
 
     </View>
