@@ -104,6 +104,14 @@ const Profile = () => {
             setSeguidores(rdata)
           })
       }
+      async function searchUser() {
+        await axios.get('https://backend-twittersito-siu.herokuapp.com/buscar-usuario/' + userId)
+          .then(res => {
+            setUserData(res.data)
+          })
+      }
+
+      searchUser()
       searchBites()
       searchSeguidos()
       searchSeguidores()
@@ -149,12 +157,12 @@ const Profile = () => {
               <View style={styles.containerbotones}>
                 <TouchableOpacity
                   onPress={() => {
-                    //navigation.navigate('Configuracion'),
-                    console.log('Presionaste el boton de Configuracion')
+                    navigation.navigate('Edit'),
+                    console.log('Presionaste el boton de Editar')
                   }}
                   style={styles.button}>
                   <Text style={styles.textbutton}>
-                    Configuracion
+                    Editar Perfil
                   </Text>
                 </TouchableOpacity>
               </View>

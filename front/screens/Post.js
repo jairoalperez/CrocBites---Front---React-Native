@@ -10,13 +10,17 @@ const Post = () => {
 
   const [postData, setPostData] = useState([])
   const [likes, setLikes] = useState('')
+  const [userId, setUserId] = useState('')
 
   const [bites, setBites] = useState([])
 
   useEffect(() => {
 
     getData('postselected').then(result => {
-        setPostData(result)
+      setPostData(result)
+    })
+    getData('userId').then(result => {
+      setUserId(result)
     })
   }, [])
 
@@ -54,24 +58,31 @@ const Post = () => {
 
         <View style={styles.results}>
 
-            {bites.map((post, o) => {
+          {bites.map((post, o) => {
             return (
               <View style={styles.containerb} key={o}>
 
                 <View style={styles.containeruser}>
                   <Text style={styles.nombre}
-                  onPress={() => {
-                    storeData('usersearch', post.id_usuario.toString())
-                    navigation.navigate('UserS')
-                  }}
+                    onPress={() => {
+                      if (userId == post.id_usuario) {
+                        console.log('igual')
+                        navigation.navigate('Profile')
+                      } else {
+                        console.log('diferente')
+                        storeData('usersearch', post.id_usuario.toString())
+                        navigation.navigate('UserS')
+                      }
+
+                    }}
                   >{post.nombre} {post.apellido}</Text>
 
                   <Text style={styles.username}
-                  
+
                   >@{post.username}</Text>
 
                   <Text style={styles.fecha}
-                  
+
                   >{post.fecha}</Text>
                 </View>
 

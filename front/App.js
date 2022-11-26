@@ -14,6 +14,7 @@ import UserS from './screens/UserS';
 import Followers from './screens/Followers';
 import Following from './screens/Following';
 import Post from './screens/Post';
+import Edit from './screens/Edit';
 
 const Stack = createNativeStackNavigator()
 
@@ -31,6 +32,7 @@ export default function App() {
         <Stack.Screen name="Following" component={Following} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="UserS" component={UserS} />
+        <Stack.Screen name="Edit" component={Edit} />
         <Stack.Screen name="Post" component={Post} />
       </Stack.Navigator>
     </NavigationContainer>
