@@ -120,10 +120,17 @@ const Dashboard = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  console.log('retweet: ' + elemento.id_post)
+                  console.log('rebite: ' + elemento.id_post)
                 }}
                 style={styles.botonesbar}>
                 <Icon name="retweet" size={30} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log('comentario: ' + elemento.id_post)
+                }}
+                style={styles.botonesbar}>
+                <Icon name="comments" size={30} color="white" />
               </TouchableOpacity>
                 </View>
                 

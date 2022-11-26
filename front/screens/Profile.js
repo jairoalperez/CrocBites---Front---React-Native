@@ -13,6 +13,9 @@ const Profile = () => {
   const [userId, setUserId] = useState('')
   const [username, setUsername] = useState('')
 
+  const [seguidos, setSeguidos] = useState([])
+  const [seguidores, setSeguidores] = useState([])
+
   const [userData, setUserData] = useState([])
   const [elements, setElements] = useState([])
 
@@ -37,7 +40,26 @@ const Profile = () => {
             setElements(res.data)
           })
       }
+      async function searchSeguidos() {
+        await axios.get('https://backend-twittersito-siu.herokuapp.com/buscar-seguidosc/' + userId)
+          .then(res => {
+            const respuesta = res.data
+            const rdata = respuesta.find(rdata => rdata.count !== null)
+            setSeguidos(rdata)
+          })
+      }
+      async function searchSeguidores() {
+        await axios.get('https://backend-twittersito-siu.herokuapp.com/buscar-seguidoresc/' + userId)
+          .then(res => {
+            const respuesta = res.data
+            const rdata = respuesta.find(rdata => rdata.count !== null)
+            setSeguidores(rdata)
+          })
+      }
+
       searchMangas()
+      searchSeguidos()
+      searchSeguidores()
       console.log('busqueda ready')
     }
 
@@ -66,7 +88,25 @@ const Profile = () => {
             setElements(res.data)
           })
       }
+      async function searchSeguidos() {
+        await axios.get('https://backend-twittersito-siu.herokuapp.com/buscar-seguidosc/' + userId)
+          .then(res => {
+            const respuesta = res.data
+            const rdata = respuesta.find(rdata => rdata.count !== null)
+            setSeguidos(rdata)
+          })
+      }
+      async function searchSeguidores() {
+        await axios.get('https://backend-twittersito-siu.herokuapp.com/buscar-seguidoresc/' + userId)
+          .then(res => {
+            const respuesta = res.data
+            const rdata = respuesta.find(rdata => rdata.count !== null)
+            setSeguidores(rdata)
+          })
+      }
       searchBites()
+      searchSeguidos()
+      searchSeguidores()
     }, 3000)
   }
 
@@ -85,8 +125,19 @@ const Profile = () => {
               <Text style={styles.username}>@{data.username}</Text>
 
               <View style={styles.containerf}>
-                <Text style={styles.follows}>Seguidores: </Text>
-                <Text style={styles.follows}>Seguidos: </Text>
+                <Text style={styles.follows}
+                onPress={() => {
+                  storeData('usersearch', userId)
+                  navigation.navigate('Followers')
+                }}
+                >Seguidores: {seguidores.count}</Text>
+
+                <Text style={styles.follows}
+                onPress={() => {
+                  storeData('usersearch', userId)
+                  navigation.navigate('Following')
+                }}
+                >Seguidos: {seguidos.count}</Text>
               </View>
 
               <View style={styles.containerbio}>

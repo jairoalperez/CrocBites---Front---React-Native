@@ -16,6 +16,9 @@ const UserS = () => {
   const [elements, setElements] = useState([])
   const [userId, setUserId] = useState('')
 
+  const [seguidos, setSeguidos] = useState([])
+  const [seguidores, setSeguidores] = useState([])
+
   useEffect(() => {
     console.log('cargo profile')
 
@@ -38,6 +41,25 @@ const UserS = () => {
             setElements(res.data)
           })
       }
+      async function searchSeguidos() {
+        await axios.get('https://backend-twittersito-siu.herokuapp.com/buscar-seguidosc/' + userSearch)
+          .then(res => {
+            const respuesta = res.data
+            const rdata = respuesta.find(rdata => rdata.count !== null)
+            setSeguidos(rdata)
+          })
+      }
+      async function searchSeguidores() {
+        await axios.get('https://backend-twittersito-siu.herokuapp.com/buscar-seguidoresc/' + userSearch)
+          .then(res => {
+            const respuesta = res.data
+            const rdata = respuesta.find(rdata => rdata.count !== null)
+            setSeguidores(rdata)
+          })
+      }
+
+      searchSeguidos()
+      searchSeguidores()
       searchMangas()
       console.log('busqueda ready')
     }
@@ -88,9 +110,29 @@ const UserS = () => {
               <Text style={styles.username}>@{data.username}</Text>
 
               <View style={styles.containerf}>
-                <Text style={styles.follows}>Seguidores: </Text>
-                <Text style={styles.follows}>Seguidos: </Text>
+              <Text style={styles.follows}
+                onPress={() => {
+                  navigation.navigate('Followers')
+                }}
+                >Seguidores: {seguidores.count}</Text>
+
+                <Text style={styles.follows}
+                onPress={() => {
+                  navigation.navigate('Following')
+                }}
+                >Seguidos: {seguidos.count}</Text>
               </View>
+
+              <TouchableOpacity
+                  onPress={() => {
+                    //navigation.navigate('Configuracion'),
+                    console.log('Presionaste el boton de seguir')
+                  }}
+                  style={styles.button}>
+                  <Text style={styles.textbutton}>
+                    Seguir
+                  </Text>
+                </TouchableOpacity>
 
               <View style={styles.containerbio}>
                 <Text style={styles.nombre}>{data.nombre} {data.apellido}</Text>
@@ -212,7 +254,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: "whitesmoke",
-    marginBottom: 20,
+    marginBottom: 5,
 
   },
   containerbio: {
@@ -270,19 +312,18 @@ const styles = StyleSheet.create({
 
   },
   textbutton: {
-    fontSize: 20,
+    fontSize: 18,
     color: "white",
 
   },
   button: {
     backgroundColor: "yellowgreen",
-    padding: 10,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
-    height: 50,
-    width: 150,
+    marginBottom: 30,
+    height: 30,
+    width: 100,
 
   },
   tweets: {

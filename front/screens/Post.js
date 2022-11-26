@@ -1,8 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
 import NavBar from '../components/NavBar'
 import { useEffect, useState } from 'react'
-import Picker from '@ouroboros/react-native-picker';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { storeData, getData } from '../helpers/asyncStorage';
 import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
@@ -11,7 +9,6 @@ const Post = () => {
   const navigation = useNavigation();
 
   const [postData, setPostData] = useState([])
-  const [elements, setElements] = useState([])
   const [likes, setLikes] = useState('')
 
   const [bites, setBites] = useState([])
@@ -62,9 +59,20 @@ const Post = () => {
               <View style={styles.containerb} key={o}>
 
                 <View style={styles.containeruser}>
-                  <Text style={styles.nombre}>{post.nombre} {post.apellido}</Text>
-                  <Text style={styles.username}>@{post.username}</Text>
-                  <Text style={styles.fecha}>{post.fecha}</Text>
+                  <Text style={styles.nombre}
+                  onPress={() => {
+                    storeData('usersearch', post.id_usuario.toString())
+                    navigation.navigate('UserS')
+                  }}
+                  >{post.nombre} {post.apellido}</Text>
+
+                  <Text style={styles.username}
+                  
+                  >@{post.username}</Text>
+
+                  <Text style={styles.fecha}
+                  
+                  >{post.fecha}</Text>
                 </View>
 
                 <Text style={styles.content}>{post.contenido}</Text>
