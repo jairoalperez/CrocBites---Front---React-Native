@@ -27,10 +27,10 @@ export default function App() {
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="MakePost" component={MakePost} />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="UserS" component={UserS} />
         <Stack.Screen name="Followers" component={Followers} />
         <Stack.Screen name="Following" component={Following} />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="UserS" component={UserS} />
         <Stack.Screen name="Post" component={Post} />
       </Stack.Navigator>
     </NavigationContainer>

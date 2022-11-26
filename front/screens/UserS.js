@@ -91,74 +91,114 @@ const UserS = () => {
             setElements(res.data)
           })
       }
+      async function searchSeguidos() {
+        await axios.get('https://backend-twittersito-siu.herokuapp.com/buscar-seguidosc/' + userSearch)
+          .then(res => {
+            const respuesta = res.data
+            const rdata = respuesta.find(rdata => rdata.count !== null)
+            setSeguidos(rdata)
+          })
+      }
+      async function searchSeguidores() {
+        await axios.get('https://backend-twittersito-siu.herokuapp.com/buscar-seguidoresc/' + userSearch)
+          .then(res => {
+            const respuesta = res.data
+            const rdata = respuesta.find(rdata => rdata.count !== null)
+            setSeguidores(rdata)
+          })
+      }
+
+      searchSeguidos()
+      searchSeguidores()
       searchBites()
     }, 3000)
   }
 
-  return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.containerusername}
-        refreshControl={<RefreshControl
-          refreshing={refresh}
-          onRefresh={() => pullMe()}
-        />}
-      >
+  const follow = async () => {
 
-        {userData.map(data => {
-          return (
-            <View style={styles.containerusername}>
-              <Text style={styles.username}>@{data.username}</Text>
+    const res = await axios.post('https://backend-twittersito-siu.herokuapp.com/follow', {
+      follower: userId,
+      followingg: userSearch
+    },
+      console.log('Conexion Satisfactoria'),
+    )
+    console.log(res.data)
+    if (res.data === 1) {
+      Alert.alert('Ahora sigues a este usuario!')
+    } else {
+      const unfollow = async () => {
+        const res = await axios.delete('https://backend-twittersito-siu.herokuapp.com/unfollow/' + userId + '/' + userSearch)
+        Alert.alert('Dejaste de seguir a este usuario')
+      }
+      unfollow()
 
-              <View style={styles.containerf}>
+    }
+  }
+
+return (
+  <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.containerusername}
+      refreshControl={<RefreshControl
+        refreshing={refresh}
+        onRefresh={() => pullMe()}
+      />}
+    >
+
+      {userData.map(data => {
+        return (
+          <View style={styles.containerusername}>
+            <Text style={styles.username}>@{data.username}</Text>
+
+            <View style={styles.containerf}>
               <Text style={styles.follows}
                 onPress={() => {
                   navigation.navigate('Followers')
                 }}
-                >Seguidores: {seguidores.count}</Text>
+              >Seguidores: {seguidores.count}</Text>
 
-                <Text style={styles.follows}
+              <Text style={styles.follows}
                 onPress={() => {
                   navigation.navigate('Following')
                 }}
-                >Seguidos: {seguidos.count}</Text>
-              </View>
-
-              <TouchableOpacity
-                  onPress={() => {
-                    //navigation.navigate('Configuracion'),
-                    console.log('Presionaste el boton de seguir')
-                  }}
-                  style={styles.button}>
-                  <Text style={styles.textbutton}>
-                    Seguir
-                  </Text>
-                </TouchableOpacity>
-
-              <View style={styles.containerbio}>
-                <Text style={styles.nombre}>{data.nombre} {data.apellido}</Text>
-                <Text style={styles.bio}>{data.bio}</Text>
-                <Text style={styles.datosbio}>{data.cumpleaños}</Text>
-              </View>
+              >Seguidos: {seguidos.count}</Text>
             </View>
-          )
-        })}
+
+            <TouchableOpacity
+              onPress={() => {
+                follow()
+                console.log('Presionaste el boton de seguir')
+              }}
+              style={styles.button}>
+              <Text style={styles.textbutton}>
+                Seguir
+              </Text>
+            </TouchableOpacity>
+
+            <View style={styles.containerbio}>
+              <Text style={styles.nombre}>{data.nombre} {data.apellido}</Text>
+              <Text style={styles.bio}>{data.bio}</Text>
+              <Text style={styles.datosbio}>{data.cumpleaños}</Text>
+            </View>
+          </View>
+        )
+      })}
 
 
-        <Text style={styles.tweets}>
-          Bites
-        </Text>
+      <Text style={styles.tweets}>
+        Bites
+      </Text>
 
-        {elements.map(elemento => {
-          return (
-            <View style={styles.containerborrar}>
+      {elements.map(elemento => {
+        return (
+          <View style={styles.containerborrar}>
 
 
-              <View style={styles.containerb}>
+            <View style={styles.containerb}>
 
               <TouchableOpacity onPress={() => {
-                    storeData('postselected', elemento.id_post.toString())
-                    navigation.navigate('Post')
-                  }}>
+                storeData('postselected', elemento.id_post.toString())
+                navigation.navigate('Post')
+              }}>
 
                 <View style={styles.containeruser}>
                   <Text style={styles.fecha}>{elemento.fecha}</Text>
@@ -215,18 +255,18 @@ const UserS = () => {
                   </TouchableOpacity>
                 </View>
 
-                </TouchableOpacity>
+              </TouchableOpacity>
 
-              </View>
             </View>
+          </View>
 
-          )
-        })}
+        )
+      })}
 
-      </ScrollView>
-      <NavBar />
-    </View>
-  )
+    </ScrollView>
+    <NavBar />
+  </View>
+)
 }
 
 export default UserS
