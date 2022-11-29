@@ -45,7 +45,7 @@ const Edit = () => {
                 correo: user.email,
                 nombre: user.name,
                 apellido: user.last,
-                date: user.date,
+                cumpleaños: user.date,
                 bio: user.bio,
                 direccion: user.add,
                 id_usuario: userId

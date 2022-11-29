@@ -36,7 +36,7 @@ const Register = () => {
         correo: user.email,
         nombre: user.name,
         apellido: user.last,
-        date: user.date,
+        cumpleaños: user.date,
         bio: 'Bio vacia',
         direccion: 'Direccion vacia',
         contraseña: user.pass,
