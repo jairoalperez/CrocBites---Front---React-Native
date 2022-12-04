@@ -128,6 +128,8 @@ const Dashboard = () => {
               <TouchableOpacity
                 onPress={() => {
                   console.log('comentario: ' + elemento.id_post)
+                  storeData('comentar', elemento.id_post.toString())
+                  navigation.navigate('Coment')
                 }}
                 style={styles.botonesbar}>
                 <Icon name="comments" size={30} color="white" />

@@ -14,6 +14,8 @@ const Post = () => {
 
   const [bites, setBites] = useState([])
 
+  const [comments, setComments] = useState([])
+
   useEffect(() => {
 
     getData('postselected').then(result => {
@@ -42,8 +44,16 @@ const Post = () => {
             setLikes(rdata)
           })
       }
+      async function searchCom() {
+        await axios.get('https://backend-twittersito-siu.herokuapp.com/mostrar-comentarios/' + postData)
+          .then(res => {
+            setComments(res.data)
+          })
+      }
+
       searchBites()
       searchLikes()
+      searchCom()
       console.log('busqueda ready')
     }
 
@@ -106,6 +116,33 @@ const Post = () => {
           })}
 
         </View>
+
+          <Text style={styles.tweets}> Comentarios </Text>
+
+        <View style={styles.results}>
+
+          {comments.map((com, o) => {
+            return (
+              <View style={styles.containerb} key={o}>
+
+                <View style={styles.containeruser}>
+                  <Text style={styles.nombre}>{com.nombre} {com.apellido}</Text>
+
+                  <Text style={styles.username}>@{com.username}</Text>
+                </View>
+
+                <Text style={styles.content}>{com.contenido}</Text>
+
+              </View>
+
+            )
+          })}
+
+        </View>
+
+
+
+
       </ScrollView>
 
       <NavBar />
@@ -224,7 +261,8 @@ const styles = StyleSheet.create({
     color: "black",
     padding: 10,
     backgroundColor: 'whitesmoke',
-    width: 350
+    width: 350,
+    marginBottom: 10
   },
   fecha: {
     fontSize: 12,
@@ -238,6 +276,13 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     fontWeight: 'bold',
     padding: 10,
+
+  },
+  tweets: {
+    marginTop: 50,
+    fontSize: 30,
+    color: "black",
+    fontWeight: 'bold'
 
   },
 
