@@ -121,10 +121,11 @@ const Profile = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.containerusername}
-        refreshControl={<RefreshControl
-          refreshing={refresh}
-          onRefresh={() => pullMe()}
-        />}
+        refreshControl={
+          <RefreshControl
+            refreshing={refresh}
+            onRefresh={() => pullMe()}
+          />}
       >
 
         {userData.map(data => {
@@ -134,17 +135,17 @@ const Profile = () => {
 
               <View style={styles.containerf}>
                 <Text style={styles.follows}
-                onPress={() => {
-                  storeData('usersearch', userId)
-                  navigation.navigate('Followers')
-                }}
+                  onPress={() => {
+                    storeData('usersearch', userId)
+                    navigation.navigate('Followers')
+                  }}
                 >Seguidores: {seguidores.count}</Text>
 
                 <Text style={styles.follows}
-                onPress={() => {
-                  storeData('usersearch', userId)
-                  navigation.navigate('Following')
-                }}
+                  onPress={() => {
+                    storeData('usersearch', userId)
+                    navigation.navigate('Following')
+                  }}
                 >Seguidos: {seguidos.count}</Text>
               </View>
 
@@ -158,7 +159,7 @@ const Profile = () => {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('Edit'),
-                    console.log('Presionaste el boton de Editar')
+                      console.log('Presionaste el boton de Editar')
                   }}
                   style={styles.button}>
                   <Text style={styles.textbutton}>
@@ -181,23 +182,23 @@ const Profile = () => {
 
 
               <View style={styles.containerb} key={a}>
-              <TouchableOpacity onPress={() => {
-                    storeData('postselected', elemento.id_post.toString())
-                    navigation.navigate('Post')
-                  }}>
+                <TouchableOpacity onPress={() => {
+                  storeData('postselected', elemento.id_post.toString())
+                  navigation.navigate('Post')
+                }}>
 
-                <View style={styles.containeruser}>
-                  <Text style={styles.fecha}>{elemento.fecha}</Text>
-                </View>
+                  <View style={styles.containeruser}>
+                    <Text style={styles.fecha}>{elemento.fecha}</Text>
+                  </View>
 
-                <Text style={styles.content}>{elemento.contenido}</Text>
+                  <Text style={styles.content}>{elemento.contenido}</Text>
 
-                {elemento.foto_url ? (
-                  <Image
-                    style={{ width: 280, height: 275, marginTop: 10, marginBottom: 10 }}
-                    source={{ uri: elemento.foto_url }}
-                  />
-                ) : null}
+                  {elemento.foto_url ? (
+                    <Image
+                      style={{ width: 280, height: 275, marginTop: 10, marginBottom: 10 }}
+                      source={{ uri: elemento.foto_url }}
+                    />
+                  ) : null}
 
                 </TouchableOpacity>
               </View>

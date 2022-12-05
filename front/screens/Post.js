@@ -107,7 +107,6 @@ const Post = () => {
 
                 <View style={styles.containerpd}>
                   <Text style={styles.postdata}>Likes: {likes.count}</Text>
-                  <Text style={styles.postdata}>Retweets: x</Text>
                 </View>
 
               </View>

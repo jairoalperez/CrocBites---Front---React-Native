@@ -13,6 +13,7 @@ const Dashboard = () => {
 
   const [elements, setElements] = useState([])
   const [userId, setUserId] = useState('')
+  const [estado, setEstado] = useState(0)
 
   useEffect(() => {
     console.log('cargo dashboard')
@@ -49,7 +50,7 @@ const Dashboard = () => {
     }, 3000)
   }
 
-  
+
 
 
   return (
@@ -62,85 +63,110 @@ const Dashboard = () => {
       >
         <View style={styles.containerP}>
           <Text style={styles.textS}>Home</Text>
-          {elements.map((elemento, i) => {
+          <TouchableOpacity
+            onPress={() => {
+              console.log('Presionaste el boton de Rebites')
+              navigation.navigate('DashboardR')
+            }}
+            style={styles.button}>
+            <Text style={styles.textbutton}>
+              Rebites
+            </Text>
+          </TouchableOpacity>
+
+            
+
+
+
+
+          {    elements.map((elemento, i) => {
             return (
               <View style={styles.containerb} key={i}>
                 <TouchableOpacity onPress={() => {
-                    storeData('postselected', elemento.id_post.toString())
-                    navigation.navigate('Post')
-                  }}>
+                  storeData('postselected', elemento.id_post.toString())
+                  navigation.navigate('Post')
+                }}>
 
 
-                <View style={styles.containeruser}>
-                  <Text style={styles.nombre}>{elemento.nombre} {elemento.apellido}</Text>
-                  <Text style={styles.username}>@{elemento.username}</Text>
-                  <Text style={styles.fecha}>{elemento.fecha}</Text>
-                </View>
+                  <View style={styles.containeruser}>
+                    <Text style={styles.nombre}>{elemento.nombre} {elemento.apellido}</Text>
+                    <Text style={styles.username}>@{elemento.username}</Text>
+                    <Text style={styles.fecha}>{elemento.fecha}</Text>
+                  </View>
 
-                <Text style={styles.content} >{elemento.contenido}</Text>
+                  <Text style={styles.content} >{elemento.contenido}</Text>
 
-                {elemento.foto_url ? (
-                  <Image
-                    style={{ width: 350, height: 350, marginTop: 10, marginBottom: 10 }}
-                    source={{ uri: elemento.foto_url }}
-                  />
-                ) : null}
+                  {elemento.foto_url ? (
+                    <Image
+                      style={{ width: 350, height: 350, marginTop: 10, marginBottom: 10 }}
+                      source={{ uri: elemento.foto_url }}
+                    />
+                  ) : null}
 
-                <View style={styles.containerpd}>
-                <TouchableOpacity
-                onPress={() => {
+                  <View style={styles.containerpd}>
+                    <TouchableOpacity
+                      onPress={() => {
 
-                  const darLike = async () => {
+                        const darLike = async () => {
 
-                    const res = await axios.post('https://backend-twittersito-siu.herokuapp.com/like', {
-                      id_user: userId,
-                      id_post: elemento.id_post
-                    },
-                      console.log('Conexion Satisfactoria'),
-                    )
-                    console.log(res.data)
-                    if (res.data === 1){
-                      Alert.alert(elemento.username+' te da las gracias por darle like a su bite!')
-                    } else {
-                        const deleteLike = async () => {
-                        const res = await axios.delete('https://backend-twittersito-siu.herokuapp.com/dlike/' + userId + '/' + elemento.id_post)
-                        Alert.alert('Se elimino tu like')
-                      }
-                      deleteLike()
+                          const res = await axios.post('https://backend-twittersito-siu.herokuapp.com/like', {
+                            id_user: userId,
+                            id_post: elemento.id_post
+                          },
+                            console.log('Conexion Satisfactoria'),
+                          )
+                          console.log(res.data)
+                          if (res.data === 1) {
+                            Alert.alert(elemento.username + ' te da las gracias por darle like a su bite!')
+                          } else {
+                            const deleteLike = async () => {
+                              const res = await axios.delete('https://backend-twittersito-siu.herokuapp.com/dlike/' + userId + '/' + elemento.id_post)
+                              Alert.alert('Se elimino tu like')
+                            }
+                            deleteLike()
 
-                    }
-                    }
-                    darLike()
+                          }
+                        }
+                        darLike()
 
 
 
-                }}
-                style={styles.botonesbar}>
-                <Icon name="heart" size={30} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  console.log('rebite: ' + elemento.id_post)
-                }}
-                style={styles.botonesbar}>
-                <Icon name="retweet" size={30} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  console.log('comentario: ' + elemento.id_post)
-                  storeData('comentar', elemento.id_post.toString())
-                  navigation.navigate('Coment')
-                }}
-                style={styles.botonesbar}>
-                <Icon name="comments" size={30} color="white" />
-              </TouchableOpacity>
-                </View>
-                
+                      }}
+                      style={styles.botonesbar}>
+                      <Icon name="heart" size={30} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        console.log('rebite: ' + elemento.id_post)
+                        storeData('ret', elemento.id_post.toString())
+                        storeData('userret', elemento.id_usuario.toString())
+                        navigation.navigate('CRetweet')
+                      }}
+                      style={styles.botonesbar}>
+                      <Icon name="retweet" size={30} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        console.log('comentario: ' + elemento.id_post)
+                        storeData('comentar', elemento.id_post.toString())
+                        navigation.navigate('Coment')
+                      }}
+                      style={styles.botonesbar}>
+                      <Icon name="comments" size={30} color="white" />
+                    </TouchableOpacity>
+                  </View>
+
                 </TouchableOpacity>
               </View>
 
             )
           })}
+
+
+
+
+
+
         </View>
       </ScrollView>
       <NavBar />

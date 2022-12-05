@@ -16,6 +16,9 @@ import Following from './screens/Following';
 import Post from './screens/Post';
 import Edit from './screens/Edit';
 import Coment from './screens/Coment';
+import DashboardR from './screens/DashboardR';
+import Retweets from './screens/Retweets'
+import CRetweet from './screens/CRetweet';
 
 const Stack = createNativeStackNavigator()
 
@@ -25,11 +28,14 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen name="Retweets" component={Retweets} />
+        <Stack.Screen name="DashboardR" component={DashboardR} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="MakePost" component={MakePost} />
         <Stack.Screen name="Coment" component={Coment} />
+        <Stack.Screen name="CRetweet" component={CRetweet} />
         <Stack.Screen name="Followers" component={Followers} />
         <Stack.Screen name="Following" component={Following} />
         <Stack.Screen name="Profile" component={Profile} />
