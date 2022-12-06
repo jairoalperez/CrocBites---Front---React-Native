@@ -171,9 +171,15 @@ const Profile = () => {
           )
         })}
 
-
         <Text style={styles.tweets}>
           Bites
+        </Text>
+        
+        <Text onPress={() => {
+          storeData('usersearch', userId)
+          navigation.navigate('Retweets')
+        }}>
+          Rebites
         </Text>
 
         {elements.map((elemento, a, b) => {

@@ -135,138 +135,144 @@ const UserS = () => {
     }
   }
 
-return (
-  <View style={styles.container}>
-    <ScrollView contentContainerStyle={styles.containerusername}
-      refreshControl={<RefreshControl
-        refreshing={refresh}
-        onRefresh={() => pullMe()}
-      />}
-    >
+  return (
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.containerusername}
+        refreshControl={<RefreshControl
+          refreshing={refresh}
+          onRefresh={() => pullMe()}
+        />}
+      >
 
-      {userData.map(data => {
-        return (
-          <View style={styles.containerusername}>
-            <Text style={styles.username}>@{data.username}</Text>
+        {userData.map(data => {
+          return (
+            <View style={styles.containerusername}>
+              <Text style={styles.username}>@{data.username}</Text>
 
-            <View style={styles.containerf}>
-              <Text style={styles.follows}
+              <View style={styles.containerf}>
+                <Text style={styles.follows}
+                  onPress={() => {
+                    navigation.navigate('Followers')
+                  }}
+                >Seguidores: {seguidores.count}</Text>
+
+                <Text style={styles.follows}
+                  onPress={() => {
+                    navigation.navigate('Following')
+                  }}
+                >Seguidos: {seguidos.count}</Text>
+              </View>
+
+              <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('Followers')
+                  follow()
+                  console.log('Presionaste el boton de seguir')
                 }}
-              >Seguidores: {seguidores.count}</Text>
-
-              <Text style={styles.follows}
-                onPress={() => {
-                  navigation.navigate('Following')
-                }}
-              >Seguidos: {seguidos.count}</Text>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => {
-                follow()
-                console.log('Presionaste el boton de seguir')
-              }}
-              style={styles.button}>
-              <Text style={styles.textbutton}>
-                Seguir
-              </Text>
-            </TouchableOpacity>
-
-            <View style={styles.containerbio}>
-              <Text style={styles.nombre}>{data.nombre} {data.apellido}</Text>
-              <Text style={styles.bio}>{data.bio}</Text>
-              <Text style={styles.datosbio}>{data.cumpleaños}</Text>
-            </View>
-          </View>
-        )
-      })}
-
-
-      <Text style={styles.tweets}>
-        Bites
-      </Text>
-
-      {elements.map(elemento => {
-        return (
-          <View style={styles.containerborrar}>
-
-
-            <View style={styles.containerb}>
-
-              <TouchableOpacity onPress={() => {
-                storeData('postselected', elemento.id_post.toString())
-                navigation.navigate('Post')
-              }}>
-
-                <View style={styles.containeruser}>
-                  <Text style={styles.fecha}>{elemento.fecha}</Text>
-                </View>
-
-                <Text style={styles.content}>{elemento.contenido}</Text>
-
-                {elemento.foto_url ? (
-                  <Image
-                    style={{ width: 350, height: 350, marginTop: 10, marginBottom: 10 }}
-                    source={{ uri: elemento.foto_url }}
-                  />
-                ) : null}
-
-
-                <View style={styles.containerpd}>
-                  <TouchableOpacity
-                    onPress={() => {
-
-                      const darLike = async () => {
-
-                        const res = await axios.post('https://backend-twittersito-siu.herokuapp.com/like', {
-                          id_user: userId,
-                          id_post: elemento.id_post
-                        },
-                          console.log('Conexion Satisfactoria'),
-                        )
-                        console.log(res.data)
-                        if (res.data === 1) {
-                          Alert.alert(elemento.username + ' te da las gracias por darle like a su bite!')
-                        } else {
-                          const deleteLike = async () => {
-                            const res = await axios.delete('https://backend-twittersito-siu.herokuapp.com/dlike/' + userId + '/' + elemento.id_post)
-                            Alert.alert('Se elimino tu like')
-                          }
-                          deleteLike()
-
-                        }
-                      }
-                      darLike()
-
-
-
-                    }}
-                    style={styles.botonesbar}>
-                    <Icon name="heart" size={30} color="white" />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      console.log('retweet: ' + elemento.id_post)
-                    }}
-                    style={styles.botonesbar}>
-                    <Icon name="retweet" size={30} color="white" />
-                  </TouchableOpacity>
-                </View>
-
+                style={styles.button}>
+                <Text style={styles.textbutton}>
+                  Seguir
+                </Text>
               </TouchableOpacity>
 
+              <View style={styles.containerbio}>
+                <Text style={styles.nombre}>{data.nombre} {data.apellido}</Text>
+                <Text style={styles.bio}>{data.bio}</Text>
+                <Text style={styles.datosbio}>{data.cumpleaños}</Text>
+              </View>
             </View>
-          </View>
+          )
+        })}
 
-        )
-      })}
+        <Text style={styles.tweets}>
+          Bites
+        </Text>
 
-    </ScrollView>
-    <NavBar />
-  </View>
-)
+        <Text onPress={() => {
+            storeData('usersearch', userSearch)
+            navigation.navigate('Retweets')
+        }}>
+          Rebites
+        </Text>
+
+        {elements.map(elemento => {
+          return (
+            <View style={styles.containerborrar}>
+
+
+              <View style={styles.containerb}>
+
+                <TouchableOpacity onPress={() => {
+                  storeData('postselected', elemento.id_post.toString())
+                  navigation.navigate('Post')
+                }}>
+
+                  <View style={styles.containeruser}>
+                    <Text style={styles.fecha}>{elemento.fecha}</Text>
+                  </View>
+
+                  <Text style={styles.content}>{elemento.contenido}</Text>
+
+                  {elemento.foto_url ? (
+                    <Image
+                      style={{ width: 350, height: 350, marginTop: 10, marginBottom: 10 }}
+                      source={{ uri: elemento.foto_url }}
+                    />
+                  ) : null}
+
+
+                  <View style={styles.containerpd}>
+                    <TouchableOpacity
+                      onPress={() => {
+
+                        const darLike = async () => {
+
+                          const res = await axios.post('https://backend-twittersito-siu.herokuapp.com/like', {
+                            id_user: userId,
+                            id_post: elemento.id_post
+                          },
+                            console.log('Conexion Satisfactoria'),
+                          )
+                          console.log(res.data)
+                          if (res.data === 1) {
+                            Alert.alert(elemento.username + ' te da las gracias por darle like a su bite!')
+                          } else {
+                            const deleteLike = async () => {
+                              const res = await axios.delete('https://backend-twittersito-siu.herokuapp.com/dlike/' + userId + '/' + elemento.id_post)
+                              Alert.alert('Se elimino tu like')
+                            }
+                            deleteLike()
+
+                          }
+                        }
+                        darLike()
+
+
+
+                      }}
+                      style={styles.botonesbar}>
+                      <Icon name="heart" size={30} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        console.log('retweet: ' + elemento.id_post)
+                      }}
+                      style={styles.botonesbar}>
+                      <Icon name="retweet" size={30} color="white" />
+                    </TouchableOpacity>
+                  </View>
+
+                </TouchableOpacity>
+
+              </View>
+            </View>
+
+          )
+        })}
+
+      </ScrollView>
+      <NavBar />
+    </View>
+  )
 }
 
 export default UserS
