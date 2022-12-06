@@ -29,6 +29,6 @@ La APP permite:
 
 Link del Backend: https://github.com/AxelGabbriel/backend-twitter-clone2
 
-Link de descarga del APK: 
+Link de descarga del APK: https://www.mediafire.com/file/k30n7q56fd6vieu/CrocBites.apk/file
 
 Link del servidor en Heroku: https://backend-twittersito-siu.herokuapp.com
